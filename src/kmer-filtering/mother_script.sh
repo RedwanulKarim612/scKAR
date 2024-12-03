@@ -1,10 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 
-. ./config.env
-
-ls $INPUT_DIR
-
-dataset_path="$INPUT_DIR"
+dataset_path=$1
 
 size=0
 parallel_instances=0
@@ -32,7 +28,7 @@ start_global=`date +%s`
 # files=$(find $dataset_path -maxdepth 1 -name "*.fastq.gz" | sort -g)
 
 start=`date +%s`
-bash jellyfish_count.sh $dataset_path/reads
+bash ./jellyfish_count.sh $dataset_path/reads
 end=`date +%s`
 runtime=$((end-start))
 
@@ -61,3 +57,23 @@ runtime=$((end_global-start_global))
 runtime_minutes=$((runtime/60))
 echo "total runtime: $runtime_minutes minutes"
 echo "total size: $size bytes"
+
+echo "creating adjacency list"
+start=`date +%s`
+
+g++ create_adj_list.cpp -o create_adj_list
+./create_adj_list $dataset_path
+
+end=`date +%s`
+runtime=$((end-start))
+echo "creating adjacency list took: $runtime seconds"
+
+echo "filtering references"
+start=`date +%s`
+
+g++ ref_filter.cpp -o ref_filter
+./ref_filter $dataset_path
+end=`date +%s`
+
+runtime=$((end-start))
+echo "filtering references took: $runtime seconds"
