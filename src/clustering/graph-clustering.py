@@ -5,7 +5,7 @@ import sys
 import os
 
 matrix_path           = sys.argv[1]
-clustering_algo       = sys.argv[2]
+clustering_algo       = sys.argv[2]        # possible options: leiden, louvain
 min_genes             = int(sys.argv[3])   # by default 10
 min_cells             = int(sys.argv[4])   # by default 2
 n_neighbors           = int(sys.argv[5])   # by default 10
@@ -98,8 +98,10 @@ if not os.path.exists(clustering_results_dir + '/bipartitions'):
 for i in range(len(bipartite_sets)):
     temp = cluster_df.copy()
     temp = temp.reset_index()
-    temp['cluster'] = temp['cluster'].replace(list(bipartite_sets[i][0]), 'A')
-    temp['cluster'] = temp['cluster'].replace(list(bipartite_sets[i][1]), 'B')
+
+    temp['cluster'] = temp['cluster'].replace(list(str(bipartite_sets[i][0])), 'A')
+    temp['cluster'] = temp['cluster'].replace(list(str(bipartite_sets[i][1])), 'B')
     temp.columns = ['cell', 'condition']
+
     temp.sort_values(by=['cell'], inplace=True)
     temp.to_csv(clustering_results_dir + "/bipartitions/bipartition_" + str(i) + ".csv", columns=["cell", "condition"], index=False, header=False)
