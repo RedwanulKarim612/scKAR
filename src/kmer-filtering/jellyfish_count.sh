@@ -9,15 +9,19 @@ function kmer_count () {
     dir=$(dirname "$file")
     dir=$dir/../jellyfish
     base=$(basename "$file" .fq.gz)
+    base=$(basename "$base" .fastq.gz)
 
     jf_path="${dir}/${base}.jf"
     fa_path="${dir}/${base}.fa"
+    filterd_path="${dir}/${base}_1_filtered.csv"
 
     if [ -f $fa_path ]; then
+        echo "File $fa_path already exists"
         return
     fi
 
-    if [ -f $fa_path.csv_1_filtered.csv ]; then
+    if [ -f $filterd_path ]; then
+        echo "File $filterd_path already exists"
         return
     fi
 

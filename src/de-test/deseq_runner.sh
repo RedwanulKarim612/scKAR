@@ -2,7 +2,7 @@
 
 path=$1
 
-metadata_folder="$path/bipartitions/"
+metadata_folder="$path/clustering_results/bipartitions/"
 matrix_folder="$path/f_test_results/"
 tpm_file="$path/cluster_tpm.csv"
 rowThreshold=$2
