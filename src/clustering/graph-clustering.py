@@ -104,4 +104,8 @@ for i in range(len(bipartite_sets)):
     temp.columns = ['cell', 'condition']
 
     temp.sort_values(by=['cell'], inplace=True)
-    temp.to_csv(clustering_results_dir + "/bipartitions/bipartition_" + str(i) + ".csv", columns=["cell", "condition"], index=False, header=False)
+    temp.to_csv(clustering_results_dir + "/bipartitions/bipartition_" + str(i) + ".csv",
+                columns=["cell", "condition"],
+                index=False,
+                header=False,
+                sep = '\t')
