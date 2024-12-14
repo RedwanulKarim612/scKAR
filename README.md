@@ -16,7 +16,7 @@ RESOLUTION=0.6
 The `INPUT_DIR` parameter should have the absolute path to the dataset.
 The dataset folder should have the following structure:
 ```
-project_root/
+data/
 ├── reads/
 │   ├── sample_1.fastq.gz
 │   └── sample_2.fastq.gz
