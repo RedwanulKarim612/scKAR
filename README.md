@@ -24,6 +24,14 @@ data/
     └── expression.csv
 ```
 
+## Environment Setup:
+To install the R libraries run the following commands from terminal:
+```
+R
+install.packages("renv")
+renv::restore()
+```
+
 ## How to run:
 From the terminal run the following commands:
 ```
