@@ -25,6 +25,10 @@ data/
 ```
 
 ## Environment Setup:
+To install the required python packages execute this command from terminal:
+```
+conda env create -f python_env.yml
+```
 To install the R libraries run the following commands from terminal:
 ```
 R
