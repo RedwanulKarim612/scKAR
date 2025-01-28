@@ -68,6 +68,7 @@ end=`date +%s`
 runtime=$((end-start))
 echo "creating adjacency list took: $runtime seconds"
 
+# if reference filtering is necessary
 echo "filtering references"
 start=`date +%s`
 
