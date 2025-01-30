@@ -200,6 +200,7 @@ Format: `<cell_annotation>,<cluster_id>` (barcode/read file name, cluster ID).
 ```
 set1	set2
 {1, 2}	{0}
+{1, 0}  {2}
 ```
 Defines biconditions for differential expression analysis.
 
