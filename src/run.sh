@@ -4,7 +4,7 @@
 
 # k-mer abundance generation
 cd ./kmer-filtering
-bash ./mother_script.sh $INPUT_DIR
+bash ./mother_script.sh $INPUT_DIR $FILTER_REFERENCE_KMERS
 
 # condition generation
 cd ../clustering

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 dataset_path=$1
-
+ref_filter=$2
 size=0
 parallel_instances=0
 declare -a pids=()
@@ -68,13 +68,13 @@ end=`date +%s`
 runtime=$((end-start))
 echo "creating adjacency list took: $runtime seconds"
 
-# if reference filtering is necessary
-echo "filtering references"
-start=`date +%s`
+if [[$ref_filter == true]]; then
+	echo "filtering references"
+	start=`date +%s`
 
-g++ ref_filter.cpp -o ref_filter
-./ref_filter $dataset_path
-end=`date +%s`
+	g++ ref_filter.cpp -o ref_filter
+	./ref_filter $dataset_path
+	end=`date +%s`
 
-runtime=$((end-start))
-echo "filtering references took: $runtime seconds"
+	runtime=$((end-start))
+	echo "filtering references took: $runtime seconds"
