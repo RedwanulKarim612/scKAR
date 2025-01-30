@@ -59,6 +59,7 @@ The `config.env` file contains all hyperparameters required to run scKAR. Below 
 ```sh
 INPUT_DIR="/path/to/data/"
 REFERENCE_TRANSCRIPTOME_SORTED_31MERS_PATH="/path/to/data"
+NUMBER_OF_THREADS=8
 ```
 - `INPUT_DIR`: Absolute path to the dataset directory.
 - `REFERENCE_TRANSCRIPTOME_SORTED_31MERS_PATH`: Path to the preprocessed 31-mers reference transcriptome (required if `FILTER_REFERENCE_KMERS=TRUE`).
@@ -99,6 +100,7 @@ RESOLUTION=0.6
 ### Parameters for F-Test
 ```sh
 MIN_ROW_THREDSHOLD=40
+PSEUDOBULK_SUZE=500000
 ```
 - `MIN_ROW_THREDSHOLD`: Minimum threshold for row filtering before applying Fisher’s F-test.
 - `PSEUDOBULK_SIZE`: The number of kmers that are pulled together for parallelized F-test. It is used for resource constraint mainly. If the matrix is too large, then independent pseudobulking is applied for augmenting the matrix into smaller matrices for processing. 
