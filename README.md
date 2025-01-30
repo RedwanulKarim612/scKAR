@@ -62,7 +62,8 @@ REFERENCE_TRANSCRIPTOME_SORTED_31MERS_PATH="/path/to/data"
 ```
 - `INPUT_DIR`: Absolute path to the dataset directory.
 - `REFERENCE_TRANSCRIPTOME_SORTED_31MERS_PATH`: Path to the preprocessed 31-mers reference transcriptome (required if `FILTER_REFERENCE_KMERS=TRUE`).
-
+- `NUMBER_OF_THREADS`: 8, the number of parallel cores to use for filtering, adjacency matrix creation, F-test and DE-test.
+  
 ### K-mer Space
 ```sh
 FILTER_REFERENCE_KMERS=TRUE
@@ -100,6 +101,7 @@ RESOLUTION=0.6
 MIN_ROW_THREDSHOLD=40
 ```
 - `MIN_ROW_THREDSHOLD`: Minimum threshold for row filtering before applying Fisher’s F-test.
+- `PSEUDOBULK_SIZE`: The number of kmers that are pulled together for parallelized F-test. It is used for resource constraint mainly. If the matrix is too large, then independent pseudobulking is applied for augmenting the matrix into smaller matrices for processing. 
 
 ### Parameters for Differential Expression
 ```sh
