@@ -1,6 +1,6 @@
 # scKAR: Single-Cell K-mer Based Analysis and Reconstruction
 
-scKAR is a bioinformatics tool designed for k-mer-based differential expression analysis in single-cell RNA sequencing (scRNA-seq) data. It allows clustering, differential expression analysis, and assembly of differentially expressed k-mers into contigs for downstream analysis.
+scKAR is a reference free bioinformatics tool designed for k-mer-based differential expression analysis single-cell RNA sequencing (scRNA-seq) data. It allows detection of differential expression transcripts. The tool is focused for non-model organisms where the reference genome is scant and diseases where atypical splicing causes various genetic variation (intron retention, lncRNA/miRNA driven regulation), causing isoform expression which are not annotated in reference transcriptome. 
 
 ## Table of Contents
 - [Installation](#installation)
