@@ -16,7 +16,7 @@ scKAR is a reference free bioinformatics tool designed for k-mer-based different
 
 ## Installation
 
-scKAR requires Python and R dependencies. To install the required environment, follow these steps:
+scKAR requires Python and R dependencies. Standard C++ compiler is also needed. To install the required environment, follow these steps:
 
 ### Setting up Python Environment
 ```sh
