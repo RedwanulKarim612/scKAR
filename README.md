@@ -40,12 +40,16 @@ data/
 ├── reads/
 │   ├── sample_1.fastq.gz
 │   └── sample_2.fastq.gz
-└── expression_matrix/
-    └── expression.csv
+├── expression_matrix/
+|   └── expression.csv
+└── genome_assembly
+    └── genome.2bit
+
 ```
 
 - `reads/` directory contains the raw sequencing reads in FASTQ format.
 - `expression_matrix/` contains the gene expression matrix in CSV format.
+- `genome_assembly/` contains the complete genome assembly for the organism being studied.
 
 The absolute path to this dataset should be provided in the `config.env` file.
 
