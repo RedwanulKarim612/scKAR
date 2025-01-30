@@ -1,11 +1,87 @@
-# scKAR
+# scKAR: Single-Cell K-mer Based Analysis and Reconstruction
 
-## Parameters
-The method's parameters can be defined in the `src/config.env` file. The file will look like this:
-```shell
-INPUT_DIR="path/to/data"
+scKAR is a bioinformatics tool designed for k-mer-based differential expression analysis in single-cell RNA sequencing (scRNA-seq) data. It allows clustering, differential expression analysis, and assembly of differentially expressed k-mers into contigs for downstream analysis.
 
-#Parameters for clustering
+## Table of Contents
+- [Installation](#installation)
+- [Input Data Format](#input-data-format)
+- [Configuration File](#configuration-file)
+- [Reference Transcriptome Processing](#reference-transcriptome-processing)
+- [Running scKAR](#running-sckar)
+- [Output Files](#output-files)
+- [Operation Modes](#operation-modes)
+- [Mode of Condition Generation](#mode-of-condition-generation)
+- [License](#license)
+
+---
+
+## Installation
+
+scKAR requires Python and R dependencies. To install the required environment, follow these steps:
+
+### Setting up Python Environment
+```sh
+conda env create -f python_env.yml
+```
+
+### Setting up R Environment
+```r
+install.packages("renv")
+renv::restore()
+```
+
+---
+
+## Input Data Format
+
+The input dataset should be structured as follows:
+
+```
+data/
+├── reads/
+│   ├── sample_1.fastq.gz
+│   └── sample_2.fastq.gz
+└── expression_matrix/
+    └── expression.csv
+```
+
+- `reads/` directory contains the raw sequencing reads in FASTQ format.
+- `expression_matrix/` contains the gene expression matrix in CSV format.
+
+The absolute path to this dataset should be provided in the `config.env` file.
+
+---
+
+## Configuration File
+
+The `config.env` file contains all hyperparameters required to run scKAR. Below is an explanation of each parameter:
+
+### Paths for Input Data
+```sh
+INPUT_DIR="/path/to/data/"
+REFERENCE_TRANSCRIPTOME_SORTED_31MERS_PATH="/path/to/data"
+```
+- `INPUT_DIR`: Absolute path to the dataset directory.
+- `REFERENCE_TRANSCRIPTOME_SORTED_31MERS_PATH`: Path to the preprocessed 31-mers reference transcriptome (required if `FILTER_REFERENCE_KMERS=TRUE`).
+
+### K-mer Space
+```sh
+FILTER_REFERENCE_KMERS=TRUE
+```
+- `FILTER_REFERENCE_KMERS`: If `TRUE`, the tool removes reference k-mers before analysis.
+
+### Mode of Condition Generation
+```sh
+MODE="GENE_EXPRESSION"
+# MODE="KMER_ABUNDANCE"
+# MODE="CUSTOM_METADATA"
+```
+- `GENE_EXPRESSION`: Clustering based on gene expression.
+- `KMER_ABUNDANCE`: Clustering based on k-mer abundance.
+- `CUSTOM_METADATA`: Uses a predefined clustering and metadata.
+
+### Parameters for Clustering
+```sh
 CLUSTERING_ALGO=leiden
 MIN_GENES=10
 MIN_CELLS=3
@@ -13,32 +89,118 @@ N_NEIGHBORS=10
 N_PCS=40
 RESOLUTION=0.6
 ```
-The `INPUT_DIR` parameter should have the absolute path to the dataset.
-The dataset folder should have the following structure:
-```
-data/
-├── reads/
-│   ├── sample_1.fastq.gz
-│   └── sample_2.fastq.gz
-└── expression_matrix
-    └── expression.csv
-```
+- `CLUSTERING_ALGO`: Clustering algorithm (default: Leiden).
+- `MIN_GENES`: Minimum number of genes expressed in a cell.
+- `MIN_CELLS`: Minimum number of cells expressing a gene.
+- `N_NEIGHBORS`: Number of nearest neighbors for graph construction.
+- `N_PCS`: Number of principal components for dimensionality reduction.
+- `RESOLUTION`: Resolution parameter for clustering.
 
-## Environment Setup:
-To install the required python packages execute this command from terminal:
+### Parameters for F-Test
+```sh
+MIN_ROW_THREDSHOLD=40
 ```
-conda env create -f python_env.yml
-```
-To install the R libraries run the following commands from terminal:
-```
-R
-install.packages("renv")
-renv::restore()
-```
+- `MIN_ROW_THREDSHOLD`: Minimum threshold for row filtering before applying Fisher’s F-test.
 
-## How to run:
-From the terminal run the following commands:
+### Parameters for Differential Expression
+```sh
+MIN_ROW_COUNT=10
+MIN_COL_COUNT=10
 ```
+- `MIN_ROW_COUNT`: Minimum count of rows to consider a feature for differential expression.
+- `MIN_COL_COUNT`: Minimum count of columns for valid feature consideration.
+
+### Parameters for Final Assembly
+```sh
+LOG2FC=1.0
+PVAL=0.05
+BASE_MEAN_Threshold=0.0
+```
+- `LOG2FC`: Log2 fold-change threshold for differential expression.
+- `PVAL`: p-value threshold for significance testing.
+- `BASE_MEAN_Threshold`: Minimum mean expression threshold.
+
+---
+
+## Reference Transcriptome Processing
+
+Before running scKAR, a preprocessed list of 31-mers from the reference transcriptome is required if `FILTER_REFERENCE_KMERS=TRUE`. To generate this list, execute:
+```sh
+bash preprocessing_script/sorted_31mers_generator_RT.sh
+```
+This generates a sorted list of 31-mers, which should be provided in `REFERENCE_TRANSCRIPTOME_SORTED_31MERS_PATH` in `config.env`.
+
+---
+
+## Running scKAR
+
+To execute scKAR, run the following commands from the terminal:
+```sh
 cd ./src
 bash ./run.sh
 ```
+
+---
+
+## Output Files
+
+scKAR generates multiple output files categorized as follows:
+
+### `bipartitions/`
+- Stores metadata for differential expression (DE) testing, where each file contains cell-wise conditions ('A' or 'B').
+
+### `deseq_results/`
+- Intermediate DE test results for each pseudo-bulk matrix.
+
+### `f_test_results/`
+- Fisher’s F-test results stored in an adjacency matrix format.
+
+### `final_results/`
+Contains subdirectories for each bipartition, including:
+```
+bipartition_0/
+├── A_kmers.fasta  # K-mers upregulated in condition A
+├── B_kmers.fasta  # K-mers upregulated in condition B
+└── abyss/
+    ├── A_contigs.fasta  # Assembled contigs for condition A
+    ├── B_contigs.fasta  # Assembled contigs for condition B
+```
+These files provide the final assembled contigs for downstream analysis.
+
+---
+
+## Operation Modes
+
+scKAR can operate in different modes by modifying the `config.env` file:
+
+- `FILTER_REFERENCE_KMERS=TRUE`: Removes reference k-mers before analysis.
+- `MODE="GENE_EXPRESSION"`: Clustering based on gene expression.
+- `MODE="KMER_ABUNDANCE"`: Clustering based on k-mer abundance.
+- `MODE="CUSTOM_METADATA"`: Uses custom clustering and metadata.
+
+---
+
+## Mode of Condition Generation
+
+If `MODE="CUSTOM_METADATA"`, users must provide:
+
+### `clustering.csv`
+```
+GSM1887215,1
+GSM1887216,1
+GSM1887217,0
+GSM1887218,2
+```
+Format: `<cell_annotation>,<cluster_id>` (barcode/read file name, cluster ID).
+
+### `bipartitions.csv`
+```
+set1	set2
+{1, 2}	{0}
+```
+Defines biconditions for differential expression analysis.
+
+---
+
+This README provides all necessary details to configure and run scKAR efficiently. If you encounter any issues, please raise an issue in the repository.
+
