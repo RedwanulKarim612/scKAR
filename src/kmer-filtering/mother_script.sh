@@ -2,6 +2,9 @@
 
 dataset_path=$1
 ref_filter=$2
+ref_transcriptome_file=$3
+num_threads=$4
+
 size=0
 parallel_instances=0
 declare -a pids=()
@@ -73,7 +76,7 @@ if [[$ref_filter == true]]; then
 	start=`date +%s`
 
 	g++ ref_filter.cpp -o ref_filter
-	./ref_filter $dataset_path
+	./ref_filter $dataset_path $ref_transcriptome_file $num_threads
 	end=`date +%s`
 
 	runtime=$((end-start))

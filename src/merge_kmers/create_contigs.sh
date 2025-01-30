@@ -48,8 +48,7 @@ if [ "$blast9_flag" = 'blast9' ] ; then
 
     ./blat.sh $blat_path $db_path $path/abyss/A_contigs.fasta $path/abyss/A_contigs_alignment.psl "blast9"
     ./blat.sh $blat_path $db_path $path/abyss/B_contigs.fasta $path/abyss/B_contigs_alignment.psl "blast9"
-    
-    
+
     # echo "Merging results from dekupl and spades"
     # python3 ./create_fastas.py $path
     # echo $blat_path

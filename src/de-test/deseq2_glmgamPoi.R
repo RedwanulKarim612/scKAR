@@ -7,7 +7,6 @@ suppressPackageStartupMessages({
     library(ggplot2)
 })
 
-n_cpus <- 8 # nolint: commented_code_linter.
 
 register(MulticoreParam(n_cpus)) 
 
@@ -17,7 +16,9 @@ metadata_file <- args[1]
 matrix_file <- args[2]
 tpm_file <- args[3]
 save_path <- args[4]
-# rowThreshold <- as.numeric(args[5])
+rowThreshold <- as.numeric(args[5])
+colThreshold <- as.numeric(args[6])
+n_cpus <- as.numeric(args[7])
 
 tpm_data <- read.csv(tpm_file, header = FALSE, row.names = 1, sep = "\t")
 colnames(tpm_data) <- c("tpm", "cluster")
