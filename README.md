@@ -11,8 +11,7 @@ scKAR is a bioinformatics tool designed for k-mer-based differential expression 
 - [Output Files](#output-files)
 - [Operation Modes](#operation-modes)
 - [Mode of Condition Generation](#mode-of-condition-generation)
-- [License](#license)
-
+  
 ---
 
 ## Installation
