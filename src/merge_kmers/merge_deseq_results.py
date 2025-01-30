@@ -24,10 +24,7 @@ print('merging deseq results')
 #     merged_df = pd.concat([merged_df, tmp_df], axis=0)
     # print(file, merged_df.shape)
 
-#read only first 6 columns
-
 merged_df = pd.read_csv(path + files[0], sep='\t', index_col=0)
-print(merged_df.columns)
 # merged_df = merged_df.iloc[:, :6]
 filtered_df = merged_df.copy()
 filtered_df = filtered_df[filtered_df['padj'] <= 0.05]
@@ -37,17 +34,12 @@ filtered_df = filtered_df[filtered_df['padj'] <= 0.05]
 # find Nan values
 filtered_df.fillna(0, inplace=True)
 filtered_df.index.name = 'kmer'
-print(filtered_df.columns)
 filtered_df.to_csv(path + 'filtered_kmers.tsv', sep='\t')
 print('created filtered_kmers.tsv')
 
 print('creating fasta files')
 A_df = filtered_df[filtered_df['log2FoldChange'] > 0]
 B_df = filtered_df[filtered_df['log2FoldChange'] < 0]
-
-print('A_kmers count:', A_df.shape[0])
-print('B_kmers count:', B_df.shape[0])
-print(filtered_df.describe())
 
 create_fasta(A_df, path + 'A_kmers.fasta')
 create_fasta(B_df, path + 'B_kmers.fasta')
