@@ -13,7 +13,16 @@ if [[ "$MODE" == "GENE_EXPRESSION" ]] then
 else if [[ "$MODE" == "CUSTOM_METADATA" ]] then
     cd ../clustering
     python3 generate_bipartitions_from_metadata.py "$INPUT_DIR"
-
+else if [[ "$MODE" == "KMER_ABUNDANCE" ]] then
+    total_cell_count=$(wc -l "$INPUT_DIR"/tpm_sum.csv | awk '{print $1}')
+    cd ../clustering
+    g++ merge_adj_for_clustering.cpp -o merge_adj_for_clustering
+    ./merge_adj_for_clustering $INPUT_DIR/adj $INPUT_DIR/expression_matrix/kmer_abundance.csv $total_cell_count
+    python3 graph-clustering.py "$INPUT_DIR"/expression_matrix/kmer_abundance.csv $CLUSTERING_ALGO $MIN_GENES $MIN_CELLS $N_NEIGHBORS $N_PCS $RESOLUTION
+else
+    echo "Invalid mode"
+    exit 1
+fi
 # F-test
 cd ../f-test
 python3 preprocess_clustering_results.py "$INPUT_DIR"/tpm_sum.csv "$INPUT_DIR"/clustering_results/cluster.csv  "$INPUT_DIR"/cluster_tpm.csv
