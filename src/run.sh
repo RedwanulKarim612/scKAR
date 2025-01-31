@@ -26,4 +26,4 @@ bash ./deseq_runner.sh $INPUT_DIR $MIN_ROW_COUNT $MIN_COL_COUNT $NUMBER_OF_THREA
 
 # K-mer Assembly
 cd ../merge_kmers
-bash ./create_contigs.sh $INPUT_DIR $BLAT_PATH "$INPUT_DIR"/genome_assembly/genome.2bit
+bash ./create_contigs.sh $INPUT_DIR $BLAT_PATH "$INPUT_DIR"/genome_assembly/genome.2bit $LOG2FC $PVAL $BASE_MEAN_THRESHOLD

@@ -2,11 +2,13 @@
 path=$1
 blat_path=$2
 db_path=$3
-
+log2fc=$4
+pval=$5
+base_mean_threshold=$6
 # if blast9_flag is true, then use blast9 flag in blat
 # if blast9_flag is false, then don't use blast9 flag in blat
 echo "blast9 flag is true"
-python3 ./merge_deseq_results.py $path
+python3 ./merge_deseq_results.py $path $log2fc $pval $base_mean_threshold
 # # create a folder named dekupl to store the output of dekupl if it doesn't exist
 # if [ ! -d $path/dekupl ]; then
 #     mkdir -p $path/dekupl

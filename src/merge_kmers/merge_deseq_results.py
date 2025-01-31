@@ -13,6 +13,10 @@ def create_fasta(df, file_name):
 
 
 path = sys.argv[1]
+log2fc = float(sys.argv[2])
+padj = float(sys.argv[3])
+base_mean = float(sys.argv[4])
+
 files = os.listdir(path)
 files = [f for f in files if f.endswith('.csv')]
 print(len(files))
@@ -27,10 +31,11 @@ print('merging deseq results')
 merged_df = pd.read_csv(path + files[0], sep='\t', index_col=0)
 # merged_df = merged_df.iloc[:, :6]
 filtered_df = merged_df.copy()
-filtered_df = filtered_df[filtered_df['padj'] <= 0.05]
 
-# filtered_df = filtered_df[abs(filtered_df['log2FoldChange']) >= 1 ]
-# filtered_df = filtered_df[filtered_df['baseMean'] >= 8.0]
+filtered_df = filtered_df[filtered_df['padj'] <= padj]
+filtered_df = filtered_df[abs(filtered_df['log2FoldChange']) >= log2fc ]
+filtered_df = filtered_df[filtered_df['baseMean'] >= base_mean]
+
 # find Nan values
 filtered_df.fillna(0, inplace=True)
 filtered_df.index.name = 'kmer'
