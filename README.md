@@ -42,6 +42,9 @@ data/
 │   └── sample_2.fastq.gz
 ├── expression_matrix/
 |   └── expression.csv
+├── metadata/
+|   ├── cluster.csv
+|   └── bipartitions.csv
 └── genome_assembly
     └── genome.2bit
 
@@ -50,6 +53,7 @@ data/
 - `reads/` directory contains the raw sequencing reads in FASTQ format.
 - `expression_matrix/` contains the gene expression matrix in CSV format.
 - `genome_assembly/` contains the complete genome assembly for the organism being studied.
+- `metadata/` contains necessary files to generate conditions when `MODE="CUSTOM_METADATA"`.
 
 The absolute path to this dataset should be provided in the `config.env` file.
 
@@ -189,7 +193,7 @@ scKAR can operate in different modes by modifying the `config.env` file:
 
 ## Mode of Condition Generation
 
-If `MODE="CUSTOM_METADATA"`, users must provide:
+If `MODE="CUSTOM_METADATA"`, users must provide the following files in `/data/metadata/` folder:
 
 ### `clustering.csv`
 ```
