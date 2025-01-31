@@ -125,11 +125,11 @@ MIN_COL_COUNT=10
 ```sh
 LOG2FC=1.0
 PVAL=0.05
-BASE_MEAN_Threshold=0.0
+BASE_MEAN_THRESHOLD=0.0
 ```
 - `LOG2FC`: Log2 fold-change threshold for differential expression.
 - `PVAL`: p-value threshold for significance testing.
-- `BASE_MEAN_Threshold`: Minimum mean expression threshold.
+- `BASE_MEAN_THRESHOLD`: Minimum mean expression threshold.
 
 ---
 
