@@ -43,7 +43,7 @@ data/
 ├── expression_matrix/
 |   └── expression.csv
 ├── metadata/
-|   ├── cluster.csv
+|   ├── clustering.csv
 |   └── bipartitions.csv
 └── genome_assembly
     └── genome.2bit
