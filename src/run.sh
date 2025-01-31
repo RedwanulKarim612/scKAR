@@ -7,8 +7,12 @@ cd ./kmer-filtering
 bash ./mother_script.sh $INPUT_DIR $FILTER_REFERENCE_KMERS $REFERENCE_TRANSCRIPTOME_SORTED_31MERS_PATH $NUMBER_OF_THREADS
 
 # condition generation
-cd ../clustering
-python3 graph-clustering.py "$INPUT_DIR"/expression_matrix/expression.csv $CLUSTERING_ALGO $MIN_GENES $MIN_CELLS $N_NEIGHBORS $N_PCS $RESOLUTION
+if [[ "$MODE" == "GENE_EXPRESSION" ]] then
+    cd ../clustering
+    python3 graph-clustering.py "$INPUT_DIR"/expression_matrix/expression.csv $CLUSTERING_ALGO $MIN_GENES $MIN_CELLS $N_NEIGHBORS $N_PCS $RESOLUTION
+else if [[ "$MODE" == "CUSTOM_METADATA" ]] then
+    cd ../clustering
+    python3 generate_bipartitions_from_metadata.py "$INPUT_DIR"
 
 # F-test
 cd ../f-test
