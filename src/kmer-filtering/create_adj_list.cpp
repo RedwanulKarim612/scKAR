@@ -15,7 +15,6 @@ void write_to_file(map<string, vector<pair<int, double>>> &kmer_map, string path
     stringstream ss;
     ll bufferSize = 0; // Track buffer size
     ll maxBufferSize = 4194304000; // 4GB for example, adjust based on your needs
-    // string buffer = "";
 
     for (const auto &kmer_pair : kmer_map){
         stringstream lineBuffer; 
@@ -29,7 +28,6 @@ void write_to_file(map<string, vector<pair<int, double>>> &kmer_map, string path
         ll lineSize = line.size();
         ss << line;
         bufferSize += lineSize; // Increment buffer size
-        // buffer += line;
         lineBuffer.str(std::string());
         lineBuffer.clear();
 
@@ -58,15 +56,12 @@ double get_file_size(string file_name){
 }
 
 int main(int argc, char** argv){
-    // ios_base::sync_with_stdio(false);
-    // cin.tie(NULL);
     string path = argv[1];
     cout << path << endl;
     ifstream file_mapping(path + string("/tpm_sum.csv"));
     map<string, int> file_map;
     string file_name;
     int file_no;
-    // ll flush_count = stoll(argv[1]);
     ll file_no_count = 0;
 
     string adj_dir = path + string("/adj");
@@ -78,7 +73,6 @@ int main(int argc, char** argv){
             break;
         }
         file_mapping >> file_no;
-        // cout << file_name << " " << file_no << "\n";
         file_map[file_name] = file_no_count;
         file_no_count++;
     }
@@ -95,12 +89,6 @@ int main(int argc, char** argv){
         ifstream file_reader(path + string("/jellyfish/") + file_name);
         string line;
 
-        // if(processed_count < 96) {
-        //     // cout << "Skipping: " << processed_count << endl;
-        //     processed_count++;
-        //     continue;
-        // }
-
         while(getline(file_reader, line)){
             stringstream ss(line);
             string kmer, count;
@@ -110,19 +98,10 @@ int main(int argc, char** argv){
         }
         cumulative_ram_usage += get_file_size(path + string("/jellyfish/") + file_name);
         cout << "Cumulative ram usage: " << cumulative_ram_usage << endl;
-        // if(!remove((path + string("/jellyfish/") + file_name).c_str())) {
-        //     cout << "File deleted successfully" << endl;
-        // } else {
-        //     cout << "Error deleting file" << endl;
-        // }
         
         processed_count++;
         printf("Current: %d\n", processed_count);
-        // if(processed_count % flush_count == 0){
-        //     printf("file no: %d\n", processed_count);
-        //     write_to_file(kmer_map, adj_dir + string("/"));
-        //     kmer_map.clear();
-        // }
+
         if (cumulative_ram_usage > MAX_RAM_USAGE){
             printf("file no: %d\n", processed_count);
             write_to_file(kmer_map, adj_dir + string("/"));
