@@ -46,9 +46,7 @@ void f_oneway_worker(
         double prefilter_rowsum = 0;
         for(auto vec: it->second) {
             groups[mapping[vec.first]].push_back(vec.second);
-            prefilter_rowsum += (ll)round(((tpm[vec.first] * vec.second) / 1000000));
-            // prefilter_rowsum += (ll)((tpm[vec.first] * vec.second) / 1000000);
-            // cout << prefilter_rowsum << " ";
+            prefilter_rowsum += (ll)round(((tpm[vec.first] * vec.second) / 1000000))
         }
         // prefilter
         if(prefilter_rowsum < prefilter_rowsum_threshold) {
@@ -229,14 +227,11 @@ ll read_file_till_kmer(map<string, vector<pair<int, double>>> &kmer_map, string 
             bufferSize -= line.size()+1;
             break;
         }
-        // cout << line << endl;
         string file_no, count;
         while (getline(ss, file_no, ',') && getline(ss, count, ',')) {
-            // cout << file_no << " " << count << endl;
             kmer_map[kmer].push_back({stoi(file_no), stod(count)});
         }
     }
-    // cout << " ---------------------\n ";
     file_reader.close();
     return bufferSize;
 }
@@ -245,7 +240,6 @@ ll readLeidenMapping(string file, vector<ll> &tpm, vector<int> &mapping) {
     ifstream file_reader(file);
     string line;
     string cell_barcode, cell_tpm, cluster_id;
-    // ll cell_id = 0;
     while(getline(file_reader, line)) {
         stringstream ss(line);
         ss >> cell_barcode >> cell_tpm >> cluster_id;
@@ -262,20 +256,13 @@ int main(int argc, char** argv) {
     string output_path = base_path + "/f_test_results/";
     string leiden_file = base_path + "/cluster_tpm.csv";
 
-    cout << "Path: " << path << endl;
-    cout << "Output Path: " << output_path << endl;
-    cout << "Leiden File: " << leiden_file << endl;
-
     // if no dir output_path exists, create it
     if (!fs::exists(output_path)) {
         fs::create_directory(output_path);
     }
 
     ll lines_to_read = stoll(argv[2]);
-    // ll total_cell_count = stoll(argv[3]);
     ll prefilter_rowsum_threshold = stoll(argv[3]);
-
-    cout << "Lines to read: " << lines_to_read << endl;
 
     vector<ll> tpm = vector<ll>();
     vector<int> mapping = vector<int>();
@@ -293,13 +280,6 @@ int main(int argc, char** argv) {
     }
     cout << "---Starting Batch---\n";
     vector<string> files = get_list_files(path, "csv");
-    
-    // for (auto x:files) {
-    //     cout << x << endl;
-    // }
-    // for (auto x:mapping) {
-    //     cout << x << endl;
-    // }
 
     string base_file = files[0];
     vector<ll> last_seekg_postions = vector<ll>(total_cell_count, 0);
@@ -328,9 +308,6 @@ int main(int argc, char** argv) {
         cout << "Writing to file done\n";
         total_map.clear();
         cout << "Iter: " << iter++ << " " << output_count-1 <<endl;
-        
-        // string cmd = "./helper_script.sh mat_" + to_string(output_count-1) + ".csv";
-        // system(cmd.c_str());
     }
 
     string last_till_kmer = "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ";
@@ -343,9 +320,6 @@ int main(int argc, char** argv) {
     cout << "Writing to file in the last chunk\n";
     write_to_file_as_matrix(total_map, output_path, total_cell_count);
 
-    // string cmd = "./helper_script.sh mat_" + to_string(output_count-1) + ".csv";
-    // system(cmd.c_str());
-
     base_file_reader.close();
     cout << "Lastly you see me!! YOOOO\n";
 }
@@ -353,6 +327,6 @@ int main(int argc, char** argv) {
 
 
 // args: args path, lines_to_read, prefilter_rowsum_threshold
-// generally lines_to_read = 700000 for 4k cells
+// generally lines_to_read = 700000 for 4k cells in our local machine
 // renal cell pre_filter = 20
 // axolotl cell pre_filter = 100
