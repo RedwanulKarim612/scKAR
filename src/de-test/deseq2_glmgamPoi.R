@@ -45,19 +45,6 @@ file <- matrix_file
         count_data[,i] <- as.integer(round((count_data[,i] * total_tpm_sums[i]) / 1e6, digits = 0))
     }
     count_data[is.na(count_data)] <- 0
-    # drop two column: "AGTAACCGTAAGTCAA-1_4_dup" , "AGTAACCGTCCAGCAC-1_4_dup"
-
-    colThreshold <- 30
-    rowThreshold <- 400
-
-    # count_data[is.na(count_data)] <- 0
-    # count_data <- as.data.frame(sapply(count_data, function(x) as.integer(round(x)))) 
-
-    # print(head(count_data))
-    # print(dim(count_data))
-    # print(dim(sample_info))
-    # print(rowSums(count_data))
-    # print(colSums(count_data))
 
     # Filter out lowly expressed genes/kmers
     print("Filtering out lowly expressed genes/kmers")
@@ -75,21 +62,8 @@ file <- matrix_file
     sample_info <- sample_info[keep >= colThreshold, ]
     
     print(paste0("Number of columns after filtering: ", ncol(count_data)))
-    
-    # valid_cols <- !is.na(colnames(count_data))
-    # count_data <- count_data[, valid_cols]
-    # sample_info <- sample_info[valid_cols, ]
-    # # print(head(count_data))
-    # sample_info <- sample_info[sample_info$file %in% colnames(count_data), ]
-    # count_data <- count_data[, sample_info$file]
-    # print(head(count_data))
-    # print(dim(count_data))
-    # print(dim(sample_info))
 
     rownames(sample_info) <- sample_info$file
-
-    # print(paste0("Mismatch between colnames(count_data) and rownames(sample_info): ", sum(!colnames(count_data) %in% rownames(sample_info))))
-    # stopifnot(all(colnames(count_data) == rownames(sample_info)))
 
     print(paste0("Starting DESeq2 analysis for file"))
     dds <- DESeqDataSetFromMatrix(countData = count_data, colData = sample_info, design = ~ condition)
@@ -105,20 +79,9 @@ file <- matrix_file
     print("Running Deseq2 analysis")
     dds <- DESeq(dds, parallel = FALSE, test = "LRT", fitType = "glmGamPoi", minmu=1e-3, minRep=Inf, reduced = ~ 1)
 
-    # Opening a JPEG device
-    # jpeg should be named save_path+".jpg"
-    # jpeg(paste0(save_path, "_disp.jpg"), width = 800, height = 800, quality = 90)
-    # plotDispEsts(dds)
-    # dev.off() # Close the devic
-    
-
     print(paste0('finish DESeq2 analysis for file: ', matrix_file))
     
     deseq_results <-  results(dds, name = "conditionB", parallel = TRUE)
-
-    # filtered <- deseq_results[which(deseq_results$padj < 0.05),]
-
-    # print(deseq_results)
 
     print(paste0('start writing results for file: ', matrix_file))
 
