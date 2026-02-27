@@ -63,9 +63,7 @@ AnovaResult f_oneway(const std::vector<std::vector<double>>& groups) {
         return AnovaResult{INF, 0.0};
     }
     double f_statistic = ms_between_groups / ms_within_groups;
-    
-    // P-value (Here, you need a way to compute the upper tail probability of F-distribution, might use a library or special function)
-    // This is a placeholder for p-value computation. You should replace it with actual computation using an appropriate library or function.
+
     double p_value = compute_p_value(f_statistic, df_between_groups, df_within_groups);
     
     return AnovaResult{f_statistic, p_value};
