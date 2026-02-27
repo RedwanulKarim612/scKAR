@@ -27,9 +27,6 @@ function check_max_parallel () {
 
 start_global=`date +%s`
 
-
-# files=$(find $dataset_path -maxdepth 1 -name "*.fastq.gz" | sort -g)
-
 start=`date +%s`
 bash ./jellyfish_count.sh $dataset_path/reads
 end=`date +%s`
