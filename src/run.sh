@@ -38,4 +38,5 @@ cd ../merge_kmers
 bipartition_folders=$(find $INPUT_DIR/final_results -mindepth 1 -maxdepth 1 -type d)
 for folder in $bipartition_folders; do
     bash ./create_contigs.sh $folder $BLAT_PATH "$INPUT_DIR"/genome_assembly/genome.2bit
+    bash ./combine_p_values.sh $folder $PVAL_COMBINATION_METHOD
 done
