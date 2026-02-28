@@ -56,7 +56,7 @@ for (i in seq_len(nrow(contigs_df))) {
   matched_kmers <- intersect(contig_kmers, names(kmer_lookup))
 
   if (length(matched_kmers) == 0) {
-    out[[i]] <- data.frame(contig_seq = contig_seq, pvalue = NA_real_)
+    out[[i]] <- data.frame(contig = contig_seq, pvalue = NA_real_)
     next
   }
 
@@ -67,7 +67,7 @@ for (i in seq_len(nrow(contigs_df))) {
 
   ebm_pval <- combine_pvalues_ebm(matched_pvals, matched_counts)
 
-  out[[i]] <- data.frame(contig_seq = contig_seq, pvalue = ebm_pval)
+  out[[i]] <- data.frame(contig = contig_seq, pvalue = ebm_pval)
 }
 
 ebm_df <- rbindlist(out, use.names = TRUE, fill = TRUE)
