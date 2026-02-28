@@ -131,6 +131,14 @@ BASE_MEAN_THRESHOLD=0.0
 - `PVAL`: p-value threshold for significance testing.
 - `BASE_MEAN_THRESHOLD`: Minimum mean expression threshold.
 
+### Parameter for Calculating p-value of Contigs
+```sh
+PVAL_COMBINATION_METHOD=hmp
+```
+- `PVAL_COMBINATION_METHOD`: The method used to calculate p-value of a contig from the p-values of its constituent k-mers. Possible options are hmp(Harmonic Mean p-value), fisher and stouffer.
+
+**Note:** Empirical Brown’s Method (EBM) is another method for this calculation. But it is computationally very expensive for large datasets because it requires the calculation of covariance matrix from the k-mer abundance data. So we have not added this method to our pipeline. However a script to use this methods is added under the auxilliary_scripts
+
 ---
 
 ## Reference Transcriptome Processing
