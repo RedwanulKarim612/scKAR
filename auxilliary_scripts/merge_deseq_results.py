@@ -32,8 +32,6 @@ print(merged_df.columns)
 filtered_df = merged_df.copy()
 filtered_df = filtered_df[filtered_df['padj'] <= 0.05]
 
-# filtered_df = filtered_df[abs(filtered_df['log2FoldChange']) >= 1 ]
-# filtered_df = filtered_df[filtered_df['baseMean'] >= 8.0]
 # find Nan values
 filtered_df.fillna(0, inplace=True)
 filtered_df.index.name = 'kmer'
@@ -42,8 +40,8 @@ filtered_df.to_csv(path + 'filtered_kmers.tsv', sep='\t')
 print('created filtered_kmers.tsv')
 
 print('creating fasta files')
-A_df = filtered_df[filtered_df['log2FoldChange'] > 0]
-B_df = filtered_df[filtered_df['log2FoldChange'] < 0]
+A_df = filtered_df[filtered_df['log2FoldChange'] > 1]
+B_df = filtered_df[filtered_df['log2FoldChange'] < 1]
 
 print('A_kmers count:', A_df.shape[0])
 print('B_kmers count:', B_df.shape[0])
