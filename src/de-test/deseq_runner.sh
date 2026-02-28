@@ -8,6 +8,9 @@ tpm_file="$path/cluster_tpm.csv"
 rowThreshold=$2
 colThreshold=$3
 numThreads=$4
+log2fc=$5
+pval=$6
+base_mean_threshold=$7
 
 metadata=$(ls "$metadata_folder" | sort -g)
 matrix=$(ls "$matrix_folder" | sort -g)
@@ -25,4 +28,10 @@ for meta in $metadata; do
             Rscript ./deseq2_glmgamPoi.R "$metadata_folder/$meta" "$matrix_folder/$mat" "$tpm_file" "$path"/deseq_results/"$meta"_"$mat"_gp.csv "$rowThreshold" "$colThreshold" "$numThreads"
         fi
     done
+    name=$(basename "$meta" .csv)
+    if [ ! -d "$path/final_results/"$name ]; then
+        mkdir -p "$path/final_results/"$name
+        python merge_deseq_results.py $path $log2fc $pval $base_mean_threshold $name
+    fi
+
 done

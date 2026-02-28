@@ -31,8 +31,11 @@ g++ adj_to_mat.cpp -o f_test.out
 
 # DE test
 cd ../de-test
-bash ./deseq_runner.sh $INPUT_DIR $MIN_ROW_COUNT $MIN_COL_COUNT $NUMBER_OF_THREADS
+bash ./deseq_runner.sh $INPUT_DIR $MIN_ROW_COUNT $MIN_COL_COUNT $NUMBER_OF_THREADS $LOG2FC $PVAL $BASE_MEAN_THRESHOLD
 
 # K-mer Assembly
 cd ../merge_kmers
-bash ./create_contigs.sh $INPUT_DIR $BLAT_PATH "$INPUT_DIR"/genome_assembly/genome.2bit $LOG2FC $PVAL $BASE_MEAN_THRESHOLD
+bipartition_folders=$(find $INPUT_DIR/final_results -mindepth 1 -maxdepth 1 -type d)
+for folder in $bipartition_folders; do
+    bash ./create_contigs.sh $folder $BLAT_PATH "$INPUT_DIR"/genome_assembly/genome.2bit
+done
