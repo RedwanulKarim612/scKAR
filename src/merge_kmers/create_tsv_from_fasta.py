@@ -18,4 +18,4 @@ def fasta_to_tsv(input_fasta, output_tsv):
     df.to_csv(output_tsv, sep='\t', index=False)
 
 fasta_to_tsv(sys.argv[1] + 'A_contigs.fasta', sys.argv[1] + 'A_contigs.tsv')
-# fasta_to_tsv(sys.argv[1] + 'B_contigs.fasta', sys.argv[1] + 'B_contigs.tsv')
+fasta_to_tsv(sys.argv[1] + 'B_contigs.fasta', sys.argv[1] + 'B_contigs.tsv')
