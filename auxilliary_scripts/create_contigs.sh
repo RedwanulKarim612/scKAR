@@ -38,8 +38,8 @@ if [ "$blast9_flag" = 'blast9' ] ; then
 
     echo "-------------Merging kmers using abyss----------------"
     >> abyss.log
-    abyss-pe k=25 name=A se=$path/A_kmers.fasta >> abyss.log
-    abyss-pe k=25 name=B se=$path/B_kmers.fasta >> abyss.log
+    abyss-pe k=27 name=A se=$path/A_kmers.fasta >> abyss.log
+    abyss-pe k=27 name=B se=$path/B_kmers.fasta >> abyss.log
     cat A-unitigs.fa > $path/abyss/A_contigs.fasta
     rm A-*
     cat B-unitigs.fa > $path/abyss/B_contigs.fasta
