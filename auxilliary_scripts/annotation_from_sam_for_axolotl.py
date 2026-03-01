@@ -1,21 +1,14 @@
 import pandas as pd
 import gffutils
 import sys
-# path = '../../data/axolotl/1_wpi_demux/final_results/bipartition_0/abyss/'
-# db_path = '/media/supertramp/ssd_ratul/thesis/reference_genome_axolotl/axolotl_omics/AmexT_v47_v6DD.db'
 path = sys.argv[1]
 db_path = sys.argv[2]
 sam_df = pd.read_csv(path + 'B_contigs_alignment.sam', header=None, sep='\t', comment='@', usecols=[0,1,2,3,4,5,6,7,8,9])   
 sam_df.columns = ['QNAME', 'FLAG', 'RNAME', 'POS', 'MAPQ', 'CIGAR', 'RNEXT', 'PNEXT', 'TLEN', 'SEQ']
 sam_df['contig_length'] = sam_df['SEQ'].str.len()
 sam_df.sort_values(by=['contig_length'], inplace=True, ascending=False)      
-# sam_df.head()
-# bed_df = pd.read_csv('/media/supertramp/supertramp_s/Thesis/data/axolotl/1_wpi_demux/final_results/sand/A_contigs_alignment.bed', header=None, sep='\t')   
-# bed_df.columns = ['chrom', 'chromStart', 'chromEnd', 'name', 'score', 'strand']
-# bed_df.sort_values(by=['name'], inplace=True, ascending=False)
+
 sam_df.sort_values(by=['QNAME'], inplace=True, ascending=False)
-# bed_df.head()
-# sam_df.head()
 def calculate_end_position(start_pos, cigar_string):
     # Operations that consume the reference sequence
     consume_reference_ops = set('MDN=X')
@@ -26,25 +19,16 @@ def calculate_end_position(start_pos, cigar_string):
         if char.isdigit():
             num_buffer += char  # Build up the number
         elif char in consume_reference_ops:
-            length_consumed += int(num_buffer)  # Add the length for operations consuming the reference
+            length_consumed += int(num_buffer)  
             num_buffer = ''  # Reset the number buffer
         else:
-            # For operations that do not consume the reference sequence, just reset the buffer
             num_buffer = ''
 
-    # Calculate the end position
     end_position = start_pos + length_consumed - 1
     return end_position
 
-# Example usage
-# start_position_example = 100
-# cigar_string_example = "10M2I5M3D7M"
-# calculate_end_position(start_position_example, cigar_string_example)
 sam_df['END'] = sam_df.apply(lambda row: calculate_end_position(row['POS'], row['CIGAR']), axis=1)
-# sam_df.head()
-# db_path = '/media/supertramp/ssd_ratul/thesis/reference_genome_axolotl/axolotl_omics/'
 
-# db = gffutils.FeatureDB(db_path + "AmexT_v47_v6DD.db")
 db = gffutils.FeatureDB(db_path)
 replace_map= {'chr1p':'CM010927.2',
 'chr1q':'CM010928.2',
@@ -169,10 +153,6 @@ for index, row in sam_df.iterrows():
                             exon_number=exon_number,
                             peptide=peptide
                          )
-        # break
-
-    # break
-# print(f_types)
 annotation_df = pd.DataFrame(annotation_map)
 annotation_df.head()
 annotation_df['homolog'].unique()
