@@ -68,7 +68,7 @@ end=`date +%s`
 runtime=$((end-start))
 echo "creating adjacency list took: $runtime seconds"
 
-if [[$ref_filter == true]]; then
+if [[ $ref_filter == true ]]; then
 	echo "filtering references"
 	start=`date +%s`
 
@@ -78,3 +78,4 @@ if [[$ref_filter == true]]; then
 
 	runtime=$((end-start))
 	echo "filtering references took: $runtime seconds"
+fi

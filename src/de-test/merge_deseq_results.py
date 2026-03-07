@@ -27,7 +27,12 @@ merged_df = pd.DataFrame()
 
 print('merging deseq results')
 
-merged_df = pd.read_csv(deseq_folder_path + files[0], sep='\t', index_col=0)
+for file in files:
+    print('merging file: ', file)
+    file_path = deseq_folder_path + file
+    df = pd.read_csv(file_path, index_col=0, sep='\t')
+    merged_df = pd.concat([merged_df, df], axis=0)
+
 filtered_df = merged_df.copy()
 
 filtered_df = filtered_df[filtered_df['padj'] <= padj]

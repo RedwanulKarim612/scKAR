@@ -7,15 +7,13 @@ cd ./kmer-filtering
 bash ./mother_script.sh $INPUT_DIR $FILTER_REFERENCE_KMERS $REFERENCE_TRANSCRIPTOME_SORTED_31MERS_PATH $NUMBER_OF_THREADS
 
 # condition generation
-if [[ "$MODE" == "GENE_EXPRESSION" ]] then
-    cd ../clustering
+cd ../clustering
+if [[ "$MODE" == "GENE_EXPRESSION" ]]; then
     python3 graph-clustering.py "$INPUT_DIR"/expression_matrix/expression.csv $CLUSTERING_ALGO $MIN_GENES $MIN_CELLS $N_NEIGHBORS $N_PCS $RESOLUTION
-else if [[ "$MODE" == "CUSTOM_METADATA" ]] then
-    cd ../clustering
+elif [[ "$MODE" == "CUSTOM_METADATA" ]]; then
     python3 generate_bipartitions_from_metadata.py "$INPUT_DIR"
-else if [[ "$MODE" == "KMER_ABUNDANCE" ]] then
+elif [[ "$MODE" == "KMER_ABUNDANCE" ]]; then
     total_cell_count=$(wc -l "$INPUT_DIR"/tpm_sum.csv | awk '{print $1}')
-    cd ../clustering
     g++ merge_adj_for_clustering.cpp -o merge_adj_for_clustering
     ./merge_adj_for_clustering $INPUT_DIR/adj $INPUT_DIR/expression_matrix/kmer_abundance.csv $total_cell_count
     python3 graph-clustering.py "$INPUT_DIR"/expression_matrix/kmer_abundance.csv $CLUSTERING_ALGO $MIN_GENES $MIN_CELLS $N_NEIGHBORS $N_PCS $RESOLUTION
