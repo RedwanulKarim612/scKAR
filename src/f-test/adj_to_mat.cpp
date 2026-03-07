@@ -39,14 +39,13 @@ void f_oneway_worker(
     vector<ll> &tpm,
     ll prefilter_rowsum_threshold
 ) {
-    cout << "Inside f_oneway_worker\n";
     // This function works on a subset of kmer_map from start to end
     for(auto it = start; it != end; ++it) {
         vector<vector<double>> groups = vector<vector<double>>(cluster_cell_count.size(), vector<double>());
         double prefilter_rowsum = 0;
         for(auto vec: it->second) {
             groups[mapping[vec.first]].push_back(vec.second);
-            prefilter_rowsum += (ll)round(((tpm[vec.first] * vec.second) / 1000000))
+            prefilter_rowsum += (ll)round(((tpm[vec.first] * vec.second) / 1000000));
         }
         // prefilter
         if(prefilter_rowsum < prefilter_rowsum_threshold) {
@@ -66,7 +65,6 @@ void f_oneway_worker(
             p_value_mutex.unlock();
         }
     }
-    cout << "Exiting f_oneway_worker\n";
 }
 
 void f_oneway_on_map(map<string, vector<pair<int, double>>> &kmer_map,
@@ -190,14 +188,11 @@ vector<string> get_list_files(string path, string ext) {
 
 
 ll read_file_till_lineCount(map<string, vector<pair<int, double>>> &kmer_map, ll lineCount, ifstream &file_reader) {
-    // cout << "Yooo inside!!\n";
     string line;
     ll curr_line = 0;
     ll bufferSize = 0;
-    // file_reader.seekg(seekg_position);
     while (curr_line < lineCount && getline(file_reader, line)){
         bufferSize += line.size()+1;
-        // cout << line << endl;
         stringstream ss(line);
         string kmer;
         getline(ss, kmer, ',');
@@ -205,16 +200,13 @@ ll read_file_till_lineCount(map<string, vector<pair<int, double>>> &kmer_map, ll
         while (getline(ss, file_no, ',') && getline(ss, count, ',')) {
             kmer_map[kmer].push_back({stoi(file_no), stod(count)});
         }
-        // cout << count << endl;
         curr_line++;
     }
-    // file_reader.close();
     return bufferSize;
 }
 
 ll read_file_till_kmer(map<string, vector<pair<int, double>>> &kmer_map, string till_kmer, string filename, ll seekg_position) {
     ifstream file_reader(filename);
-    // cout << filename << endl; 
     string line;
     ll bufferSize = 0;
     file_reader.seekg(seekg_position);
@@ -307,7 +299,6 @@ int main(int argc, char** argv) {
         write_to_file_as_matrix(total_map, output_path, total_cell_count);
         cout << "Writing to file done\n";
         total_map.clear();
-        cout << "Iter: " << iter++ << " " << output_count-1 <<endl;
     }
 
     string last_till_kmer = "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ";
@@ -321,7 +312,6 @@ int main(int argc, char** argv) {
     write_to_file_as_matrix(total_map, output_path, total_cell_count);
 
     base_file_reader.close();
-    cout << "Lastly you see me!! YOOOO\n";
 }
 
 
