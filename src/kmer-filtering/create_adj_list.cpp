@@ -83,7 +83,7 @@ int main(int argc, char** argv){
     int processed_count = 0;
     double cumulative_ram_usage = 0.0;
     for(auto it=file_map.begin(); it!=file_map.end(); it++){
-        file_name = it->first + string("_1_filtered.csv");
+        file_name = it->first + string(".fa.csv_1_filtered.csv");
         cout << file_name << endl;
         cout << path + string("/jellyfish/") + file_name << endl;
         ifstream file_reader(path + string("/jellyfish/") + file_name);
