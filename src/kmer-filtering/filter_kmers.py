@@ -26,6 +26,7 @@ norm_df.to_csv(filename+"_1_filtered.csv", index=False, header=False)
 
 with open(dirname + '/../tpm_sum.csv', 'a') as f:
     only_filename = os.path.basename(filename)
+    only_filename = only_filename.replace('.fa.csv', '')
     f.write(only_filename + '\t' + str(total_kmer_count)+'\n')
     f.flush()
 
