@@ -1,7 +1,7 @@
-name: base
+name: sckar
 channels:
-  - bioconda
   - conda-forge
+  - bioconda
   - defaults
 dependencies:
   - _anaconda_depends=2023.07=py311_1
