@@ -90,6 +90,9 @@ void ref_filtering_worker(vector<string>& ref_data, string adj_file){
         write_to_file(ss, adj_file);
     }
     cout << "exiting ref_filtering_worker for: " << adj_file << "\n";
+    cout << "removing file: " << adj_file << "\n";
+    fs::remove(adj_file);
+    cout << "removed file: " << adj_file << "\n";
 
 }
 

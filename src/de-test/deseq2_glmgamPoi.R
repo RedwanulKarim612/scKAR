@@ -8,7 +8,6 @@ suppressPackageStartupMessages({
 })
 
 
-register(MulticoreParam(n_cpus)) 
 
 args <- commandArgs(trailingOnly = TRUE)
 
@@ -19,6 +18,8 @@ save_path <- args[4]
 rowThreshold <- as.numeric(args[5])
 colThreshold <- as.numeric(args[6])
 n_cpus <- as.numeric(args[7])
+
+register(MulticoreParam(n_cpus)) 
 
 tpm_data <- read.csv(tpm_file, header = FALSE, row.names = 1, sep = "\t")
 colnames(tpm_data) <- c("tpm", "cluster")
